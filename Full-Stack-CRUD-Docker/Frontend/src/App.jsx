@@ -2,6 +2,8 @@ import React from 'react'
 import Books from "./pages/Books"
 import Add from "./pages/Add"
 import Update from "./pages/Update"
+import './style.css'
+
 import{
   BrowserRouter,
   Routes,
@@ -10,12 +12,12 @@ import{
 
 function App() {
   return (
-    <div className="app d-flex justify-content-center align-items-center text-center vh-100 px-5">
+    <div className="App">
      <BrowserRouter>
       <Routes>
         <Route path='/' element={<Books/>}/>
         <Route path='/add' element={<Add/>}/>
-        <Route path='/update' element={<Update/>}/>
+        <Route path='/update/:id' element={<Update/>}/>
       </Routes>
      </BrowserRouter>
     </div>

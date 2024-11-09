@@ -40,37 +40,30 @@ app.post("/books", (req, res)=>{
     })
 })
 
+app.delete("/books/:id", (req, res)=>{
+    const bookId = req.params.id;
+    const q = "DELETE FROM books WHERE id = ?"
+    db.query(q, [bookId], (err, data)=>{
+        if(err) return res.json(err)
+        return res.json(data)
+    })
+})
+
+app.put("/books/:id", (req, res)=>{
+    const bookId = req.params.id;
+    const q = "UPDATE books SET `tittle` = ?, `desc` = ?, `price` = ?, `cover` = ? WHERE id = ?"
+    const values = [
+        req.body.tittle,
+        req.body.desc,
+        req.body.price,
+        req.body.cover,
+    ]; 
+    db.query(q, [...values, bookId], (err, data)=>{
+        if(err) return res.json(err)
+        return res.json(data)
+    })
+})
+
 app.listen(8800, ()=>{
     console.log("Connected to backend!1")
 })
-
-// 
-// app.use(express.json());
-
-// const db = mysql.createConnection({
-//     host: '172.17.0.2', // Replace with the IP address of your MySQL container
-//     user: 'root',
-//     password: 'rootpassword',
-//     database: 'Usermanagement',
-//     multipleStatements: true
-// });
-
-// db.connect((err) => {
-//     if (err) {
-//         console.error('Error connecting to the database:', err);
-//         return;
-//     }
-//     console.log('Connected to the database');
-// });
-
-// app.get('/api/users', (req, res) => {
-//     const sqlSelect = "SELECT * FROM users";
-//     db.query(sqlSelect, (err, result) => {
-//         if (err) return res.json({ message: err });
-//         return res.json(result);
-//     });
-// });
-
-// app.listen(port, () => {
-//     console.log(`Server running on http://localhost:${port}`);
-// });
