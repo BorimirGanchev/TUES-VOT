@@ -1,6 +1,42 @@
+version: '3.8'
+
 services:
-    database:
-        build: ./Database
-        restart: always
-        ports:
-            - "3306:3306"
+  frontend:
+    build:
+      context: ./Frontend
+      dockerfile: Dockerfile
+    ports:
+      - "5173:5173"
+    depends_on:
+      - backend
+    networks:
+      - my-network
+
+  backend:
+    build:
+      context: ./Backend
+      dockerfile: Dockerfile
+    ports:
+      - "8800:8800"
+    depends_on:
+      - db
+    networks:
+      - my-network
+
+  db:
+    image: mysql:latest
+    environment:
+      MYSQL_ROOT_PASSWORD: Password
+      MYSQL_DATABASE: test
+    ports:
+      - "3306:3306"
+    volumes:
+      - db_data:/var/lib/mysql
+    networks:
+      - my-network
+
+volumes:
+  db_data:
+
+networks:
+  my-network:
